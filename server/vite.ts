@@ -68,18 +68,18 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: express.Express) {
-  // Use the current working directory as the project root
-  const projectRoot = process.cwd();
+  // Absolute path to the frontend build output
+  const clientPath = path.resolve(process.cwd(), "dist", "public");
 
-  // Vite builds your frontend into "dist" by default
-  const distPath = path.resolve(projectRoot, "dist");
+  console.log("Serving static files from:", clientPath);
 
-  // Serve the static assets from dist
-  app.use(express.static(distPath));
+  // Serve static assets (JS, CSS, images, etc.)
+  app.use(express.static(clientPath));
 
-  // For any non-API route, send back index.html (SPA behavior)
+  // For any non-API route, return the SPA index.html
   app.get("*", (_req, res) => {
-    res.sendFile(path.join(distPath, "index.html"));
+    res.sendFile(path.join(clientPath, "index.html"));
   });
 }
+
 
