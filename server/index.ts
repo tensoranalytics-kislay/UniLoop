@@ -5,6 +5,13 @@ import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
 
+// Make sure NODE_ENV and Express env are set (default to production)
+if (!process.env.NODE_ENV) {
+  process.env.NODE_ENV = "production";
+}
+app.set("env", process.env.NODE_ENV);
+console.log("Express env:", app.get("env"));
+
 // Trust proxy for Replit deployment (required for secure cookies)
 app.set('trust proxy', 1);
 
